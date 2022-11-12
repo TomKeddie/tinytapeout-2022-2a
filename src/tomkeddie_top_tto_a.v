@@ -1,6 +1,6 @@
 `default_nettype none
 
-module tomkeddie_top_tto
+module tomkeddie_top_tto_a
   #(parameter CLOCK_RATE=1000)
   (
    input [7:0]  io_in,
