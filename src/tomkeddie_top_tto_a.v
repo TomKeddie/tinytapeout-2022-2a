@@ -9,11 +9,13 @@ module tomkeddie_top_tto_a
   
   wire                      clk   = io_in[0];
   wire                      reset = io_in[1];
-  wire                      uart_tx_pin;
+  wire                      uart_tx_pin0;
+  wire                      uart_tx_pin1;
 
-  assign io_out[0] = uart_tx_pin;
+  assign io_out[0] = uart_tx_pin0;
+  assign io_out[1] = uart_tx_pin1;
 
   // instatiate lcd
-  uart_tx uart_tx(.clk(clk), .reset(reset), .tx_pin(uart_tx_pin));
+  uart_tx uart_tx(.clk(clk), .reset(reset), .tx_pin0(uart_tx_pin0), .tx_pin1(uart_tx_pin1));
   
 endmodule
