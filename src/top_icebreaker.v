@@ -1,5 +1,5 @@
 module top
-  #(parameter DIVIDER=6000, DELAY_BIT=15)
+  #(parameter DIVIDER=5000, DELAY_BIT=15)
   (
    // testbench is controlled by test.py
    input  CLK,
