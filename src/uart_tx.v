@@ -5,10 +5,12 @@ module uart_tx (
                 input  reset,
                 output tx_pin0,
                 output tx_pin1,
+                output tx_pin2,
                 );
 
   wire [7:0]           text0 [0:36];
   wire [7:0]           text1 [0:36];
+  wire [7:0]           text2 [0:36];
 
   assign text0[0] = "T";
   assign text0[1] = "i";
@@ -86,13 +88,53 @@ module uart_tx (
   assign text1[35] = "\r";
   assign text1[36] = "\n";
   
+  assign text2[0] = "O";
+  assign text2[1] = "p";
+  assign text2[2] = "e";
+  assign text2[3] = "n";
+  assign text2[4] = " ";
+  assign text2[5] = "t";
+  assign text2[6] = "h";
+  assign text2[7] = "e";
+  assign text2[8] = " ";
+  assign text2[9] = "p";
+  assign text2[10] = "o";
+  assign text2[11] = "d";
+  assign text2[12] = " ";
+  assign text2[13] = "b";
+  assign text2[14] = "a";
+  assign text2[15] = "y";
+  assign text2[16] = " ";
+  assign text2[17] = "d";
+  assign text2[18] = "o";
+  assign text2[19] = "o";
+  assign text2[20] = "r";
+  assign text2[21] = "s";
+  assign text2[22] = ",";
+  assign text2[23] = " ";
+  assign text2[24] = "H";
+  assign text2[25] = "A";
+  assign text2[26] = "L";
+  assign text2[27] = ".";
+  assign text2[28] = ".";
+  assign text2[29] = ".";
+  assign text2[30] = ".";
+  assign text2[31] = ".";
+  assign text2[32] = ".";
+  assign text2[33] = ".";
+  assign text2[34] = ".";
+  assign text2[35] = "\r";
+  assign text2[36] = "\n";
+
   reg [3:0]            bit_counter;
   reg [5:0]            text_index;
   
   reg                  tx_pin0_int;
   reg                  tx_pin1_int;
+  reg                  tx_pin2_int;
   assign tx_pin0 = tx_pin0_int;
   assign tx_pin1 = tx_pin1_int;
+  assign tx_pin2 = tx_pin2_int;
 
   always @(posedge clk) begin
     // if reset, set counter to 0
@@ -100,6 +142,7 @@ module uart_tx (
       bit_counter <= 0;
       tx_pin0_int  <= 1'b1;
       tx_pin1_int  <= 1'b1;
+      tx_pin2_int  <= 1'b1;
       text_index <= 0;
     end else begin
       // bit counter - START, 8xDATA, STOP, IDLE = 11 bits
@@ -119,18 +162,22 @@ module uart_tx (
         0       : begin
           tx_pin0_int = 1'b1; // idle
           tx_pin1_int = 1'b1; // idle
+          tx_pin2_int = 1'b1; // idle
         end
         1       : begin
           tx_pin0_int = 1'b0; // start
           tx_pin1_int = 1'b0; // start
+          tx_pin2_int = 1'b0; // start
         end
         10      : begin
           tx_pin0_int = 1'b1; // stop
           tx_pin1_int = 1'b1; // stop
+          tx_pin2_int = 1'b1; // stop
         end
         default : begin
           tx_pin0_int = text0[text_index][bit_counter-2];
           tx_pin1_int = text1[text_index][bit_counter-2];
+          tx_pin2_int = text2[text_index][bit_counter-2];
         end
       endcase
     end
